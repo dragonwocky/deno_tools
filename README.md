@@ -52,7 +52,7 @@ await start(manifest, { render });
 ```
 
 `fresh_unocss` supports class interpretation and class compilation via
-the [`fresh_unocss/classes.ts`](<](./fresh_unocss/classes.ts)>) module.
+the [`fresh_unocss/classes.ts`](./fresh_unocss/classes.ts) module.
 Variant group expansion is available in both modes, to convert e.g.
 `dark:(font-bold m(x-1 y-2) border-(red-200 1))` to
 `dark:font-bold dark:mx-1 dark:my-2 dark:border-red-200 dark:border-1`.
