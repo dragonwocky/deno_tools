@@ -35,17 +35,17 @@ with [Fresh](https://fresh.deno.dev) (a next-gen web framework for Deno).
 After scaffolding a new project with the Fresh init script,
 add `fresh_unocss` to your project's `import_map.json`:
 
-```
-"$unocss/": "https://raw.githubusercontent.com/dragonwocky/deno_tools/main/fresh_unocss/"
+```json
+"$unocss/": "https://raw.githubusercontent.com/dragonwocky/deno_tools/main/fresh_unocss/",
 ```
 
 Add the render function to your project's `main.ts` entrypoint and call the `setup()` function:
 
 ```ts
-import { start } from '$fresh/server.ts';
-import manifest from './fresh.gen.ts';
+import { start } from "$fresh/server.ts";
+import manifest from "./fresh.gen.ts";
 
-import { render, setup } from '$unocss/render.ts';
+import { render, setup } from "$unocss/render.ts";
 setup();
 
 await start(manifest, { render });
@@ -64,9 +64,9 @@ E.g.
 
 ```tsx
 /** @jsx h */
-import { h } from 'preact';
-import { IS_BROWSER } from '$fresh/runtime.ts';
-import { compile, interpret } from '$unocss/classes.ts';
+import { h } from "preact";
+import { IS_BROWSER } from "$fresh/runtime.ts";
+import { compile, interpret } from "$unocss/classes.ts";
 
 export default () => {
   return (
@@ -86,7 +86,9 @@ export default () => {
 **Configuration:**
 
 The default configuration can be found within `fresh_unocss/render.ts`.
-It comes with `presetUno`, `presetIcons`, `presetTypography`,
+It comes with [`@unocss/preset-uno`](https://github.com/unocss/unocss/tree/main/packages/preset-uno),
+[`@unocss/preset-icons`](https://github.com/unocss/unocss/tree/main/packages/preset-icons),
+[`@unocss/preset-typography`](https://github.com/unocss/unocss/tree/main/packages/preset-typography),
 [Inter](https://rsms.me/inter/), [Fira Code](https://github.com/tonsky/FiraCode),
 and [modern-normalize](https://github.com/sindresorhus/modern-normalize). It can
 be overriden by providing a [config](https://github.com/unocss/unocss#configurations)
