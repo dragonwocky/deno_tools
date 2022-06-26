@@ -52,13 +52,14 @@ await start(manifest, { render });
 ```
 
 `fresh_unocss` supports class interpretation and class compilation via
-the `fresh_unocss/classes.ts` module. Variant group expansion is available in both modes,
-to convert e.g. `dark:(font-bold m(x-1 y-2) border-(red-200 1))` to
+the [`fresh_unocss/classes.ts`](<](./fresh_unocss/classes.ts)>) module.
+Variant group expansion is available in both modes, to convert e.g.
+`dark:(font-bold m(x-1 y-2) border-(red-200 1))` to
 `dark:font-bold dark:mx-1 dark:my-2 dark:border-red-200 dark:border-1`.
 
 > **Warning:** Class processing and generation occurs server-side only.
-> If additional utility classes are likely to required on the client-side,
-> they should be temporarily added to placeholder elements.
+> If additional utility classes are likely to be required on the client-side,
+> they should be temporarily added to placeholder elements in interactive islands.
 
 E.g.
 
@@ -85,11 +86,11 @@ export default () => {
 
 **Configuration:**
 
-The default configuration can be found within `fresh_unocss/render.ts`.
+The default configuration can be found within [`fresh_unocss/render.ts`](./fresh_unocss/render.ts).
 It comes with [`@unocss/preset-uno`](https://github.com/unocss/unocss/tree/main/packages/preset-uno),
 [`@unocss/preset-icons`](https://github.com/unocss/unocss/tree/main/packages/preset-icons),
 [`@unocss/preset-typography`](https://github.com/unocss/unocss/tree/main/packages/preset-typography),
 [Inter](https://rsms.me/inter/), [Fira Code](https://github.com/tonsky/FiraCode),
 and [modern-normalize](https://github.com/sindresorhus/modern-normalize). It can
 be overriden by providing a [config](https://github.com/unocss/unocss#configurations)
-object to the `setup()` function.
+object to the first argument of the `setup()` function.
