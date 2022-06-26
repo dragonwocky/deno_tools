@@ -88,7 +88,7 @@ const writeBundleToFile = async (
 const name = "resource_bundler",
   version = "0.1.0",
   description =
-    "Bundles static module assets/resources into a single-file archive.\n(E.g. For use with `deno compile`.)",
+    "Bundles static module assets/resources into a single-file archive,\ne.g. for use with `deno compile`.",
   helpDesc = "Display usage information.",
   versionDesc = "Get this program's version number.";
 

@@ -38,7 +38,7 @@ const interpret: AcceptsStringOrTemplateString = (cls, ...tmpls): string => {
     // --> uno-68ff7987
     cls = interpret(cls, ...tmpls);
     const hashed = `uno-${hashFromString(cls)}`;
-    if (_shortcuts.find(([h]) => h === hashed)) _shortcuts.push([hashed, cls]);
+    if (!_shortcuts.find(([h]) => h === hashed)) _shortcuts.push([hashed, cls]);
     return hashed;
   };
 

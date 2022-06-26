@@ -9,11 +9,6 @@ import {
   transform,
 } from "https://esm.sh/@parcel/css-wasm@1.10.1";
 import {
-  DOMParser,
-  Element,
-  initParser,
-} from "https://deno.land/x/deno_dom@v0.1.31-alpha/deno-dom-wasm-noinit.ts";
-import {
   createGenerator,
   UnoGenerator,
   UserConfig,
@@ -25,13 +20,15 @@ import presetTypography from "https://esm.sh/@unocss/preset-typography@0.41.0";
 
 const wasmInitUrl =
   "https://cdn.esm.sh/@parcel/css-wasm@1.10.1/parcel_css_node_bg.wasm";
-if (!IS_BROWSER) {
-  // @ts-ignore: provide absolute path to wasm module
-  await initParcel(new URL(wasmInitUrl));
-  await initParser();
-}
+// @ts-ignore: provide absolute path to wasm module
+if (!IS_BROWSER) await initParcel(new URL(wasmInitUrl));
 
 // @parcel/css: css parser, transformer and minifier
+
+// why not just use unocss' builtin minified output?
+// - it contains empty comments
+// - @parcel/css can be used to minify the preflight/reset
+// - @parcel/css can be exposed for external use
 
 const minify = (css: string | Uint8Array, filename = "styles.css") => {
   const { code } = transform({
@@ -61,7 +58,12 @@ const setup = (config: UserConfig = {
       },
     }),
     presetTypography(),
-    presetWebFonts(),
+    presetWebFonts({
+      fonts: {
+        sans: "Inter",
+        mono: "Fira Code",
+      },
+    }),
   ],
   preflights: [{ getCSS: () => cssReset }],
 }): UnoGenerator => uno = createGenerator(config);
@@ -70,26 +72,23 @@ const render: RenderFunction = async (ctx, render) => {
   if (!uno) throw new Error("fresh_unocss: setup() must be called!");
 
   // get styles from prev. render in same ctx
-  let [classes = "", styles = ""] = (ctx.state.get("uno") ?? []) as string[];
+  let [html = "", styles = ""] = (ctx.state.get("uno") ?? []) as string[];
   // remove prev styles
   const prevStylesIndex = ctx.styles.findIndex((s) => s === styles);
   if (prevStylesIndex > -1) ctx.styles.splice(prevStylesIndex, 1);
 
-  // extract classes
-  const html = render(),
-    dom = new DOMParser().parseFromString(html, "text/html")!;
-  classes += " " + Array.from(dom.querySelectorAll("[class]") as unknown as //
-  ArrayLike<Element>).map((e) => e.getAttribute("class")).join(" ");
-
+  // render page and components
+  html += render();
   // inform uno of compiled class aliases
+  // must be done after render
   uno.config.shortcuts.push(...compiledShortcuts());
   uno.config.shortcuts = [...new Set(uno.config.shortcuts)];
   // generate new css
-  styles = minify((await uno.generate(classes)).css);
+  styles = minify((await uno.generate(html)).css);
   ctx.styles.unshift(styles);
 
   // persist for next render in same ctx
-  ctx.state.set("uno", [classes, styles]);
+  ctx.state.set("uno", [html, styles]);
 };
 
 export { minify, render, setup };
