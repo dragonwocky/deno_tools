@@ -1,7 +1,7 @@
 // (c) dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
 
-import { RenderFunction } from "https://deno.land/x/fresh@1.0.0-rc.4/server.ts";
-import { IS_BROWSER } from "https://deno.land/x/fresh@1.0.0-rc.4/runtime.ts";
+import { RenderFunction } from "https://deno.land/x/fresh@1.0.0/server.ts";
+import { IS_BROWSER } from "https://deno.land/x/fresh@1.0.0/runtime.ts";
 import { compiledShortcuts } from "./classes.ts";
 
 import {
