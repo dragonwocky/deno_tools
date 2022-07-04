@@ -93,7 +93,7 @@ export default () => {
 The default configuration can be found within [`fresh_unocss/server.ts`](./fresh_unocss/server.ts).
 It comes with [`@unocss/preset-uno`](https://github.com/unocss/unocss/tree/main/packages/preset-uno),
 [`@unocss/preset-icons`](https://github.com/unocss/unocss/tree/main/packages/preset-icons),
-[`@unocss/preset-typography`](https://github.com/unocss/unocss/tree/main/packages/preset-typography),
+[`@unocss/preset-typography`](https://github.com/unocss/unocss/tree/main/packages/preset-typography), default [Prism](https://prismjs.com/) themes,
 [Inter](https://rsms.me/inter/), [Fira Code](https://github.com/tonsky/FiraCode),
 and [modern-normalize](https://github.com/sindresorhus/modern-normalize). It can
 be overriden by providing a [config](https://github.com/unocss/unocss#configurations)
