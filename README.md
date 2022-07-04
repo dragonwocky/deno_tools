@@ -49,14 +49,14 @@ Add the render function to your project's `main.ts` entrypoint and call the `set
 import { start } from "$fresh/server.ts";
 import manifest from "./fresh.gen.ts";
 
-import { render, setup } from "$unocss/render.ts";
+import { render, setup } from "$unocss/server.ts";
 setup();
 
 await start(manifest, { render });
 ```
 
 `fresh_unocss` supports class interpretation and class compilation via
-the [`fresh_unocss/classes.ts`](./fresh_unocss/classes.ts) module.
+the [`fresh_unocss/runtime.ts`](./fresh_unocss/runtime.ts) module.
 Variant group expansion is available in both modes, to convert e.g.
 `dark:(font-bold m(x-1 y-2) border-(red-200 1))` to
 `dark:font-bold dark:mx-1 dark:my-2 dark:border-red-200 dark:border-1`.
@@ -71,7 +71,7 @@ E.g.
 /** @jsx h */
 import { h } from "preact";
 import { IS_BROWSER } from "$fresh/runtime.ts";
-import { compile, interpret } from "$unocss/classes.ts";
+import { compile, interpret } from "$unocss/runtime.ts";
 
 export default () => {
   return (
@@ -90,7 +90,7 @@ export default () => {
 
 **Configuration:**
 
-The default configuration can be found within [`fresh_unocss/render.ts`](./fresh_unocss/render.ts).
+The default configuration can be found within [`fresh_unocss/server.ts`](./fresh_unocss/server.ts).
 It comes with [`@unocss/preset-uno`](https://github.com/unocss/unocss/tree/main/packages/preset-uno),
 [`@unocss/preset-icons`](https://github.com/unocss/unocss/tree/main/packages/preset-icons),
 [`@unocss/preset-typography`](https://github.com/unocss/unocss/tree/main/packages/preset-typography),
