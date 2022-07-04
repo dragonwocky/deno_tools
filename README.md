@@ -39,6 +39,10 @@ add `fresh_unocss` to your project's `import_map.json`:
 "$unocss/": "https://raw.githubusercontent.com/dragonwocky/deno_tools/main/fresh_unocss/",
 ```
 
+> **Warning:** This project lives temporarily in this repository until a proper
+> plugin system is available for Fresh. To avoid dependency issues, consider
+> replacing `main` with the latest commit hash of this repository.
+
 Add the render function to your project's `main.ts` entrypoint and call the `setup()` function:
 
 ```ts
