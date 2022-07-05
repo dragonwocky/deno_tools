@@ -1,6 +1,7 @@
 // (c) dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
 
 import prism from "https://esm.sh/prismjs@1.28.0";
+import { escape } from "https://esm.sh/he";
 import { type HtmlExtension } from "https://esm.sh/micromark-util-types@1.0.2/index.d.ts";
 import { type Preset } from "https://esm.sh/@unocss/core@0.43.0";
 
@@ -108,7 +109,7 @@ const presetPrism = (
       .code-block > code {
         display: inline-block;
         min-width: max-content;
-        width: calc(100% - 3rem);
+        width: 100%;
       }
       .code-block .code-line {
         padding: 0 1.5rem;
@@ -227,7 +228,7 @@ const defaultCodeBlockRenderer = (codeBlock: CodeBlock) => {
         codeBlock.language,
       )
         .split("\n")
-      : codeBlock.codeLines,
+      : codeBlock.codeLines.map(escape),
     wrappedCodeLines = withSyntaxHighlighting.map((line, i) =>
       `<div class="code-line${
         codeBlock.highlightedLines.includes(i + 1) ? " highlighted-line" : ""
@@ -259,7 +260,7 @@ const prismHtml = (
   },
   exit: {
     codeFencedFenceInfo() {
-      const [codeLanguage = "plaintext", highlightStr = ""] = //
+      const [codeLanguage = "", highlightStr = ""] = //
           (this.resume() ?? "").trim().split(":"),
         highlightedCodeLines = /{[\d,-]+}/.test(highlightStr)
           ? highlightStr.slice(1, -1).split(",")
@@ -269,7 +270,7 @@ const prismHtml = (
               const [rangeStart, rangeEnd] = num.split("-")
                 .map(Number).sort((a, b) => a - b);
               return Array.from(
-                { length: rangeEnd - rangeStart },
+                { length: (rangeEnd - rangeStart) + 1 },
                 (_, i) => rangeStart + i,
               );
             }).flat()
