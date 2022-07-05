@@ -62,14 +62,13 @@ const setup = (
         }),
         presetTypography({
           cssExtend: {
-            // patch overflow scroll bug that kills padding
+            // make code blocks look nice
             "pre": {
               "max-width": "100%",
               "min-width": "100%",
               "display": "inline-block",
               "padding": "1.25rem 0",
             },
-            // make code blocks look nice
             "code:not(pre code)": {
               "padding": "0 0.3em",
               "margin": "0 0.1em",
