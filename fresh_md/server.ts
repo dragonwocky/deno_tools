@@ -6,7 +6,10 @@ import {
 } from "https://deno.land/std@0.146.0/encoding/front_matter.ts";
 import { emojify } from "https://deno.land/x/emoji@0.2.1/mod.ts";
 import { gfm, gfmHtml } from "https://esm.sh/micromark-extension-gfm@2.0.1";
-import { math, mathHtml } from "https://esm.sh/micromark-extension-math@2.0.2";
+import {
+  math,
+  mathHtml,
+} from "https://esm.sh/micromark-extension-math@2.0.2?deps=katex@0.16.0";
 import {
   type Extension,
   type HtmlExtension,
@@ -14,21 +17,29 @@ import {
 import { micromark } from "https://esm.sh/micromark@3.0.10";
 import sanitizeHtml from "https://esm.sh/sanitize-html@2.7.0";
 
-import { prismHtml } from "./prism.ts";
+import { prismHtml } from "./micromark_prism.ts";
+import { headingAnchorsHtml } from "./micromark_heading_anchors.ts";
 
-// TODO(dragonwocky): title anchors
-
-// transform gfm content to  via micromark with emoji
+// transforms gfm content to html via micromark with emoji
 // aliasing, katex math, and prism.js syntax highlighting.
-// recommended to be used with the @unocss/typography
-// as in fresh_unocss. additional code block styling for
-// line numbers, line highlights and syntax highlighting
-// is exported as an unocss preset from prism.ts
+// recommended to be used with @unocss/preset-typography
+// as in fresh_unocss
+
+// additional heading styling for heading anchors and
+// additional code block styling for line numbers, line highlights
+// and syntax highlighting are exported as unocss presets
 
 // by default, only markdown + html + js will be syntax highlighted.
 // support for additional languages can be imported like so:
 import "https://esm.sh/prismjs@1.28.0/components/prism-typescript?no-check";
-import "https://esm.sh/prismjs@1.28.0/components/prism-diff?no-check";
+
+// the following stylesheet should be included for math formatting:
+// <link
+//   rel="stylesheet"
+//   href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css"
+//   integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC"
+//   crossOrigin="anonymous"
+// />
 
 let config: {
   markdownExtensions: Extension[];
@@ -39,14 +50,17 @@ let config: {
   showLineNumbers: boolean;
 };
 
-const setup = (userConfig: Partial<typeof config> = {}) =>
-  config = {
-    markdownExtensions: userConfig.markdownExtensions ?? [gfm(), math()],
+const setup = (userConfig: Partial<typeof config> = {}) => {
+  const showLineNumbers = userConfig.showLineNumbers ?? true;
+  return config = {
+    markdownExtensions: userConfig.markdownExtensions ??
+      [gfm(), math({ singleDollarTextMath: false })],
     htmlExtensions: userConfig.htmlExtensions ??
       [
         gfmHtml(),
         mathHtml(),
-        prismHtml({ showLineNumbers: userConfig.showLineNumbers ?? true }),
+        prismHtml({ showLineNumbers }),
+        headingAnchorsHtml(),
       ],
     sanitizeHtml: userConfig.sanitizeHtml ?? true,
     sanitizeHtmlOpts: userConfig.sanitizeHtmlOpts ?? {
@@ -74,12 +88,13 @@ const setup = (userConfig: Partial<typeof config> = {}) =>
         a: ["aria-hidden", "href", "tabindex", "rel", "target"],
         svg: ["viewbox", "width", "height", "aria-hidden"],
         path: ["fill-rule", "d"],
-        "*": ["class", "id", "data-*"],
+        "*": ["class", "id", "style", "data-*"],
       },
     },
     emojifyAliases: userConfig.emojifyAliases ?? true,
-    showLineNumbers: userConfig.showLineNumbers ?? true,
+    showLineNumbers,
   };
+};
 setup();
 
 const compile = <Frontmatter = Record<string, string>>(markdown: string) => {
@@ -106,3 +121,5 @@ const compile = <Frontmatter = Record<string, string>>(markdown: string) => {
 };
 
 export { compile, setup };
+export { presetPrism } from "./micromark_prism.ts";
+export { presetHeadingAnchors } from "./micromark_heading_anchors.ts";

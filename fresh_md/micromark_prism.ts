@@ -28,6 +28,7 @@ type Palette = {
 
 // unocss preset for use with fresh_unocss
 // default colors from https://unpkg.com/browse/@primer/primitives@7.8.4/dist/scss/colors/
+
 const presetPrism = (
   { dark = "class", lightPalette = {}, darkPalette = {} }: Partial<{
     dark: "class" | "media";
@@ -41,6 +42,7 @@ const presetPrism = (
   return {
     name: "preset-prism",
     preflights: [{
+      layer: "typography",
       getCSS: () => `
       :root {
         --prism-fg: ${lightPalette["fg"] ?? "#24292f"};
@@ -92,6 +94,12 @@ const presetPrism = (
         darkPalette["highlight-border"] ?? "rgb(59, 130, 246)"
       };
       } ${dark === "media" ? "}" : ""}
+      .code-block {
+        position: relative;
+        padding: 1.25rem 0;
+        line-height: 1.75;
+        overflow-x: auto;
+      }
       .code-block, code {
         background: var(--prism-bg);
         color: var(--prism-fg);
@@ -100,16 +108,15 @@ const presetPrism = (
       .code-block > code {
         display: inline-block;
         min-width: max-content;
+        width: calc(100% - 3rem);
       }
       .code-block .code-line {
         padding: 0 1.5rem;
         min-width: max-content;
-      }
-      .code-block {
-        position: relative;
+        width: 100%;
       }
       .code-block > code[data-meta] {
-        margin-top: 1rem;
+        margin-top: 1.25rem;
       }
       .code-block > code[data-meta]::before {
         content: attr(data-meta);
@@ -236,6 +243,7 @@ const defaultCodeBlockRenderer = (codeBlock: CodeBlock) => {
 
 // inspired by https://github.com/timlrx/rehype-prism-plus
 // works by hijacking https://github.com/micromark/micromark/blob/main/packages/micromark/dev/lib/compile.js
+
 const prismHtml = (
   { renderCodeBlock = defaultCodeBlockRenderer, showLineNumbers = true }:
     Partial<{

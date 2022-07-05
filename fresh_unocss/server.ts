@@ -55,10 +55,7 @@ const setup = (
         presetUno({ dark: "class", variablePrefix: "uno-" }),
         presetIcons({
           cdn: "https://esm.sh/",
-          extraProperties: {
-            "display": "inline-block",
-            "vertical-align": "middle",
-          },
+          extraProperties: { "display": "inline-block" },
         }),
         presetTypography({
           cssExtend: {
