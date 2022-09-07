@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "$fresh/": "https://raw.githubusercontent.com/lucacasonato/fresh/1b3c9f2569c5d56a6d37c366cb5940f26b7e131e/",
+    "preact": "https://esm.sh/preact@10.10.0"
+  }
+}
